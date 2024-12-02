@@ -9,7 +9,7 @@
   * [Accept the EULA](#accept-the-eula)
   * [Permissions of Files](#permissions-of-files)
   * [Resetting](#resetting)
-- [Source](#source)
+- [Source](#source-original-atm9-repo)
 
 <!-- tocstop -->
 
@@ -57,7 +57,12 @@ This container is designed for [Unraid](https://unraid.net) so the user in the c
 ### Resetting
 If the install is incomplete for some reason.  Deleting the downloaded server file in /data will restart the install/upgrade process.
 
-## Source
+## Source (Original ATM9 repo)
 Github: https://github.com/Goobaroo/docker-allthemods9
 
 Docker: https://hub.docker.com/repository/docker/goobaroo/allthemods9
+
+## Source (This repo)
+Github: https://github.com/W3LFARe/docker-allthemods10
+
+Docker: https://registry.hub.docker.com/r/w3lfare/allthemods10
