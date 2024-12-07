@@ -34,12 +34,51 @@ fi
 if [[ -n "$MOTD" ]]; then
     sed -i "s/motd\s*=/ c motd=$MOTD" /data/server.properties
 fi
-if [[ -n "$OPS" ]]; then
-    echo $OPS | awk -v RS=, '{print}' > ops.txt
+if [[ -n "$ENABLE_WHITELIST" ]]; then
+    sed -i "s/white-list=.*/white-list=$ENABLE_WHITELIST/" /data/server.properties
 fi
-if [[ -n "$ALLOWLIST" ]]; then
-    echo $ALLOWLIST | awk -v RS=, '{print}' > white-list.txt
-fi
+[[ ! -f whitelist.json ]] && echo "[]" > whitelist.json
+IFS=',' read -ra USERS <<< "$WHITELIST_USERS"
+for raw_username in "${USERS[@]}"; do
+	username=$(echo "$raw_username" | xargs)
+	if [[ ! "$username" =~ ^[a-zA-Z0-9_]{3,16}$ ]]; then
+		echo "Whitelist: Invalid username: '$username'. Skipping..."
+		continue
+	fi
+
+	UUID=$(curl -s "https://api.mojang.com/users/profiles/minecraft/$username" | jq -r '.id')
+	if [[ "$UUID" != "null" ]]; then
+		if jq -e ".[] | select(.uuid == \"$UUID\")" whitelist.json > /dev/null; then
+			echo "Whitelist: $username ($UUID) is already whitelisted."
+		else
+			echo "Whitelist: Adding $username ($UUID) to whitelist."
+			jq ". += [{\"uuid\": \"$UUID\", \"name\": \"$username\"}]" whitelist.json > tmp.json && mv tmp.json whitelist.json
+		fi
+	else
+		echo "Whitelist: Failed to fetch UUID for $username."
+	fi
+done
+[[ ! -f ops.json ]] && echo "[]" > ops.json
+IFS=',' read -ra OPS <<< "$OP_USERS"
+for raw_username in "${OPS[@]}"; do
+    username=$(echo "$raw_username" | xargs)
+    if [[ ! "$username" =~ ^[a-zA-Z0-9_]{3,16}$ ]]; then
+        echo "Ops: Invalid username: '$username'. Skipping..."
+        continue
+    fi
+
+    UUID=$(curl -s "https://api.mojang.com/users/profiles/minecraft/$username" | jq -r '.id')
+    if [[ "$UUID" != "null" ]]; then
+        if jq -e ".[] | select(.uuid == \"$UUID\")" ops.json > /dev/null; then
+            echo "Ops: $username ($UUID) is already an operator."
+        else
+            echo "Ops: Adding $username ($UUID) as operator."
+            jq ". += [{\"uuid\": \"$UUID\", \"name\": \"$username\", \"level\": 4}]" ops.json > tmp.json && mv tmp.json ops.json
+        fi
+    else
+        echo "Ops: Failed to fetch UUID for $username."
+    fi
+done
 
 sed -i 's/server-port.*/server-port=25565/g' server.properties
 chmod 755 run.sh
