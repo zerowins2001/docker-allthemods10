@@ -33,18 +33,13 @@ As the end user, you are repsonsible for accepting the EULA from Mojang to run t
 
 ## Options
 
-These environment variables can be set at run time to override their defaults.
+These environment variables can be set to override their defaults.
 
 * JVM_OPTS "-Xms2048m -Xmx4096m"
 * MOTD "All the Mods 10-1.27.0 Server Powered by Docker"
-* LEVEL world
-
-### Adding Minecraft Operators
-
-Set the enviroment variable `OPS` with a comma separated list of players.
-
-example:
-`OPS="OpPlayer1,OpPlayer2"`
+* ENABLE_WHITELIST "true" or "false"
+* WHITELIST_USERS "TestUserName1, TestUserName2"
+* OP_USERS "TestUserName1, TestUserName2"
 
 ## Troubleshooting
 
