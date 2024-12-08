@@ -26,19 +26,19 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - name: Build and push the Docker image (versioned tag)
+        uses: docker/build-push-action@v5.3.0
+        with:
+           context: .
+           push: true
+           tags: ${{ secrets.DOCKERHUB_USERNAME }}/allthemods10:${{ env.SERVER_VERSION }}
 
-- name: Build and push the Docker image (versioned tag)
-  uses: docker/build-push-action@v5.3.0
-  with:
-    context: .
-    push: true
-    tags: ${{ secrets.DOCKERHUB_USERNAME }}/allthemods10:${{ env.SERVER_VERSION }}
-
-- name: Build and push the Docker image (latest tag)
-  if: ${{ github.ref_name == 'main' }}
-  uses: docker/build-push-action@v5.3.0
-  with:
-    context: .
-    push: true
-    tags: ${{ secrets.DOCKERHUB_USERNAME }}/allthemods10:latest
+      - name: Build and push the Docker image (latest tag)
+        if: ${{ github.ref_name == 'main' }}
+        uses: docker/build-push-action@v5.3.0
+        with:
+           context: .
+           push: true
+           tags: ${{ secrets.DOCKERHUB_USERNAME }}/allthemods10:latest
 
