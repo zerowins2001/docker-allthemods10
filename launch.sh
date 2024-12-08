@@ -3,6 +3,7 @@
 set -x
 
 NEOFORGE_VERSION=21.1.83
+SERVER_VERSION=1.27.0
 cd /data
 
 if ! [[ "$EULA" = "false" ]]; then
@@ -12,10 +13,10 @@ else
 	exit 99
 fi
 
-if ! [[ -f 'Server-Files-1.27.0.zip' ]]; then
+if ! [[ -f "Server-Files-$SERVER_VERSION.zip" ]]; then
 	rm -fr config defaultconfigs kubejs mods packmenu Simple.zip forge*
-	curl -Lo 'Server-Files-1.27.0.zip' 'https://edge.forgecdn.net/files/5965/157/Server-Files-1.27.zip' || exit 9
-	unzip -u -o 'Server-Files-1.27.0.zip' -d /data
+	curl -Lo "Server-Files-SERVER_VERSION.zip" 'https://edge.forgecdn.net/files/5965/157/Server-Files-1.27.zip' || exit 9
+	unzip -u -o "Server-Files-$SERVER_VERSION.zip" -d /data
 	DIR_TEST=$(find . -type d -maxdepth 1 | tail -1 | sed 's/^.\{2\}//g')
 	if [[ $(find . -type d -maxdepth 1 | wc -l) -gt 1 ]]; then
 		cd "${DIR_TEST}"
