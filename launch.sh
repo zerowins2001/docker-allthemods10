@@ -74,7 +74,7 @@ for raw_username in "${OPS[@]}"; do
             echo "Ops: $username ($UUID) is already an operator."
         else
             echo "Ops: Adding $username ($UUID) as operator."
-            jq ". += [{\"uuid\": \"$UUID\", \"name\": \"$username\", \"level\": 4}]" ops.json > tmp.json && mv tmp.json ops.json
+            jq ". += [{\"uuid\": \"$UUID\", \"name\": \"$username\", \"level\": 4, \"bypassesPlayerLimit\": false}]" ops.json > tmp.json && mv tmp.json ops.json
         fi
     else
         echo "Ops: Failed to fetch UUID for $username."
