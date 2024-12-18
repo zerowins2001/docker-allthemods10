@@ -52,6 +52,7 @@ for raw_username in "${USERS[@]}"; do
 		if jq -e ".[] | select(.uuid == \"$UUID\")" whitelist.json > /dev/null; then
 			echo "Whitelist: $username ($UUID) is already whitelisted."
 		else
+			UUID=$(echo "$UUID" | sed -r 's/(.{8})(.{4})(.{4})(.{4})(.{12})/\1-\2-\3-\4-\5/')
 			echo "Whitelist: Adding $username ($UUID) to whitelist."
 			jq ". += [{\"uuid\": \"$UUID\", \"name\": \"$username\"}]" whitelist.json > tmp.json && mv tmp.json whitelist.json
 		fi
@@ -73,6 +74,7 @@ for raw_username in "${OPS[@]}"; do
         if jq -e ".[] | select(.uuid == \"$UUID\")" ops.json > /dev/null; then
             echo "Ops: $username ($UUID) is already an operator."
         else
+			UUID=$(echo "$UUID" | sed -r 's/(.{8})(.{4})(.{4})(.{4})(.{12})/\1-\2-\3-\4-\5/')
             echo "Ops: Adding $username ($UUID) as operator."
             jq ". += [{\"uuid\": \"$UUID\", \"name\": \"$username\", \"level\": 4, \"bypassesPlayerLimit\": false}]" ops.json > tmp.json && mv tmp.json ops.json
         fi
