@@ -20,6 +20,7 @@ if ! [[ -f "Server-Files-$SERVER_VERSION.zip" ]]; then
 	DIR_TEST=$(find . -type d -maxdepth 1 | tail -1 | sed 's/^.\{2\}//g')
 	if [[ $(find . -type d -maxdepth 1 | wc -l) -gt 1 ]]; then
 		cd "${DIR_TEST}"
+		find . -type d -exec chmod 777 {} +
 		mv -f * /data
 		cd /data
 		rm -fr "$DIR_TEST"
