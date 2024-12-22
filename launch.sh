@@ -1,7 +1,5 @@
 #!/bin/bash
 
-https://www.curseforge.com/minecraft/modpacks/all-the-mods-10/download/6009 060
-
 set -x
 
 NEOFORGE_VERSION=21.1.90
