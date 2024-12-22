@@ -15,7 +15,7 @@ fi
 
 if ! [[ -f "Server-Files-$SERVER_VERSION.zip" ]]; then
 	rm -fr config defaultconfigs kubejs mods packmenu Simple.zip forge*
-	curl -Lo "Server-Files-$SERVER_VERSION.zip" 'https://edge.forgecdn.net/files/6009/060/Server-Files-2.8.zip' || exit 9
+	curl -Lo "Server-Files-$SERVER_VERSION.zip" 'https://mediafilez.forgecdn.net/files/6013/608/Server-Files-2.8.zip' || exit 9
 	unzip -u -o "Server-Files-$SERVER_VERSION.zip" -d /data
 	DIR_TEST=$(find . -type d -maxdepth 1 | tail -1 | sed 's/^.\{2\}//g')
 	if [[ $(find . -type d -maxdepth 1 | wc -l) -gt 1 ]]; then
@@ -24,7 +24,8 @@ if ! [[ -f "Server-Files-$SERVER_VERSION.zip" ]]; then
 		cd /data
 		rm -fr "$DIR_TEST"
 	fi
-	curl -Lo neoforge-${NEOFORGE_VERSION}-installer.jar http://files.neoforged.net/maven/net/neoforged/neoforge/$NEOFORGE_VERSION/neoforge-$NEOFORGE_VERSION-installer.jar
+	
+	curl -Lo neoforge-${NEOFORGE_VERSION}-installer.jar https://maven.neoforged.net/releases/net/neoforged/neoforge/$NEOFORGE_VERSION/neoforge-$NEOFORGE_VERSION-installer.jar
 	java -jar neoforge-${NEOFORGE_VERSION}-installer.jar --installServer
 fi
 
