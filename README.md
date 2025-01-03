@@ -1,4 +1,4 @@
-# [All the Mods 10-2.16](https://www.curseforge.com/minecraft/modpacks/all-the-mods-10) on Curseforge
+# [All the Mods 10-2.17](https://www.curseforge.com/minecraft/modpacks/all-the-mods-10) on Curseforge
 <!-- toc -->
 
 - [Description](#description)
@@ -15,13 +15,13 @@
 
 ## Description
 
-This container is built to run on an [Unraid](https://unraid.net) server, outside of that your milliage will vary.
+This container is built to run on an [Unraid](https://unraid.net) server, outside of that your mileage will vary.
 
-The docker on first run will download the same version as tagged of `All the Mods 10-2.16` and install it.  This can take a while as the Forge installer can take a bit to complete.  You can watch the logs and it will eventually finish.
+The docker on the first run will download the same version as tagged `All the Mods 10-2.17` and install it.  This can take a while as the Forge installer can take a bit to complete.  You can watch the logs and it will eventually finish.
 
-After the first run it will simply start the server.
+After the first run, it will simply start the server.
 
-Note: There are no modded minecraft files shipped in the container, they are all downloaded at runtime.
+Note: There are no modded Minecraft files shipped in the container, they are all downloaded at runtime.
 
 ## Requirements
 
@@ -36,7 +36,7 @@ As the end user, you are responsible for accepting the EULA from Mojang to run t
 These environment variables can be set to override their defaults.
 
 * JVM_OPTS "-Xms2048m -Xmx4096m"
-* MOTD "All the Mods 10-2.16 Server Powered by Docker"
+* MOTD "All the Mods 10-2.17 Server Powered by Docker"
 * ENABLE_WHITELIST "true" or "false"
 * WHITELIST_USERS "TestUserName1, TestUserName2"
 * OP_USERS "TestUserName1, TestUserName2"
@@ -50,7 +50,7 @@ Did you pass in the environment variable EULA set to `true`?
 This container is designed for [Unraid](https://unraid.net) so the user in the container runs on uid 99 and gid 100.  This may cause permission errors on the /data mount on other systems.
 
 ### Resetting
-If the install is incomplete for some reason.  Deleting the downloaded server file in /data will restart the install/upgrade process.
+If the installation is incomplete for some reason.  Deleting the downloaded server file in /data will restart the install/upgrade process.
 
 ## Source (Original ATM9 repo)
 Github: https://github.com/Goobaroo/docker-allthemods9
