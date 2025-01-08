@@ -2,6 +2,7 @@
 
 set -x
 
+
 NEOFORGE_VERSION=21.1.93
 SERVER_VERSION=2.20
 cd /data
