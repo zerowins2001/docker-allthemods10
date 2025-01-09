@@ -41,6 +41,15 @@ fi
 if [[ -n "$ENABLE_WHITELIST" ]]; then
     sed -i "s/white-list=.*/white-list=$ENABLE_WHITELIST/" /data/server.properties
 fi
+if [[ -n "$ALLOW_FLIGHT" ]]; then
+    sed -i "s/allow-flight=.*/allow-flight=$ALLOW_FLIGHT/" /data/server.properties
+fi
+if [[ -n "$MAX_PLAYERS" ]]; then
+    sed -i "s/max-players=.*/max-players=$MAX_PLAYERS/" /data/server.properties
+fi
+if [[ -n "$ONLINE_MODE" ]]; then
+    sed -i "s/online-mode=.*/online-mode=$ONLINE_MODE/" /data/server.properties
+fi
 [[ ! -f whitelist.json ]] && echo "[]" > whitelist.json
 IFS=',' read -ra USERS <<< "$WHITELIST_USERS"
 for raw_username in "${USERS[@]}"; do
