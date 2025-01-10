@@ -50,7 +50,7 @@ fi
 if [[ -n "$ONLINE_MODE" ]]; then
     sed -i "s/online-mode=.*/online-mode=$ONLINE_MODE/" /data/server.properties
 fi
-[[ ! -f whitelist.json ]] && echo "[]" > whitelist.json
+echo "[]" > whitelist.json
 IFS=',' read -ra USERS <<< "$WHITELIST_USERS"
 for raw_username in "${USERS[@]}"; do
 	username=$(echo "$raw_username" | xargs)
@@ -72,7 +72,7 @@ for raw_username in "${USERS[@]}"; do
 		echo "Whitelist: Failed to fetch UUID for $username."
 	fi
 done
-[[ ! -f ops.json ]] && echo "[]" > ops.json
+echo "[]" > ops.json
 IFS=',' read -ra OPS <<< "$OP_USERS"
 for raw_username in "${OPS[@]}"; do
     username=$(echo "$raw_username" | xargs)
