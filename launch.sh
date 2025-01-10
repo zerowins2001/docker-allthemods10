@@ -36,7 +36,7 @@ if [[ -n "$JVM_OPTS" ]]; then
 	for j in ${JVM_OPTS}; do sed -i '$a\'$j'' user_jvm_args.txt; done
 fi
 if [[ -n "$MOTD" ]]; then
-    sed -i "s/motd\s*=/ c motd=$MOTD" /data/server.properties
+    sed -i "s/^motd=.*/motd=$MOTD/" /data/server.properties
 fi
 if [[ -n "$ENABLE_WHITELIST" ]]; then
     sed -i "s/white-list=.*/white-list=$ENABLE_WHITELIST/" /data/server.properties
