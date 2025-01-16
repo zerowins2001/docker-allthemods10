@@ -50,23 +50,27 @@ if [[ -n "$ONLINE_MODE" ]]; then
     sed -i "s/online-mode=.*/online-mode=$ONLINE_MODE/" /data/server.properties
 fi
 
-# Initialize whitelist
-echo "[]" > whitelist.json
+# Initialize whitelist.json if not present
+if [[ ! -f whitelist.json ]]; then
+    echo "[]" > whitelist.json
+fi
+
 IFS=',' read -ra USERS <<< "$WHITELIST_USERS"
 for raw_username in "${USERS[@]}"; do
     username=$(echo "$raw_username" | xargs)
 
-    if [[ ! "$username" =~ ^[a-zA-Z0-9_]{3,16}$ ]]; then
-        echo "Whitelist: Invalid username: '$username'. Skipping..."
+    if [[ -z "$username" ]] || ! [[ "$username" =~ ^[a-zA-Z0-9_]{3,16}$ ]]; then
+        echo "Whitelist: Invalid or empty username: '$username'. Skipping..."
         continue
     fi
 
     UUID=$(curl -s "https://playerdb.co/api/player/minecraft/$username" | jq -r '.data.player.id')
     if [[ "$UUID" != "null" ]]; then
-        if jq -e ".[] | select(.uuid == \"$UUID\")" whitelist.json > /dev/null; then
-            echo "Whitelist: $username ($UUID) is already whitelisted."
+        UUID=$(echo "$UUID" | sed -r 's/(.{8})(.{4})(.{4})(.{4})(.{12})/\1-\2-\3-\4-\5/')
+
+        if jq -e ".[] | select(.uuid == \"$UUID\" and .name == \"$username\")" whitelist.json > /dev/null; then
+            echo "Whitelist: $username ($UUID) is already whitelisted. Skipping..."
         else
-            UUID=$(echo "$UUID" | sed -r 's/(.{8})(.{4})(.{4})(.{4})(.{12})/\1-\2-\3-\4-\5/')
             echo "Whitelist: Adding $username ($UUID) to whitelist."
             jq ". += [{\"uuid\": \"$UUID\", \"name\": \"$username\"}]" whitelist.json > tmp.json && mv tmp.json whitelist.json
         fi
@@ -75,23 +79,27 @@ for raw_username in "${USERS[@]}"; do
     fi
 done
 
-# Initialize ops
-echo "[]" > ops.json
+# Initialize ops.json if not present
+if [[ ! -f ops.json ]]; then
+    echo "[]" > ops.json
+fi
+
 IFS=',' read -ra OPS <<< "$OP_USERS"
 for raw_username in "${OPS[@]}"; do
     username=$(echo "$raw_username" | xargs)
 
-    if [[ ! "$username" =~ ^[a-zA-Z0-9_]{3,16}$ ]]; then
-        echo "Ops: Invalid username: '$username'. Skipping..."
+    if [[ -z "$username" ]] || ! [[ "$username" =~ ^[a-zA-Z0-9_]{3,16}$ ]]; then
+        echo "Ops: Invalid or empty username: '$username'. Skipping..."
         continue
     fi
 
     UUID=$(curl -s "https://playerdb.co/api/player/minecraft/$username" | jq -r '.data.player.id')
     if [[ "$UUID" != "null" ]]; then
-        if jq -e ".[] | select(.uuid == \"$UUID\")" ops.json > /dev/null; then
-            echo "Ops: $username ($UUID) is already an operator."
+        UUID=$(echo "$UUID" | sed -r 's/(.{8})(.{4})(.{4})(.{4})(.{12})/\1-\2-\3-\4-\5/')
+
+        if jq -e ".[] | select(.uuid == \"$UUID\" and .name == \"$username\")" ops.json > /dev/null; then
+            echo "Ops: $username ($UUID) is already an operator. Skipping..."
         else
-            UUID=$(echo "$UUID" | sed -r 's/(.{8})(.{4})(.{4})(.{4})(.{12})/\1-\2-\3-\4-\5/')
             echo "Ops: Adding $username ($UUID) as operator."
             jq ". += [{\"uuid\": \"$UUID\", \"name\": \"$username\", \"level\": 4, \"bypassesPlayerLimit\": false}]" ops.json > tmp.json && mv tmp.json ops.json
         fi
