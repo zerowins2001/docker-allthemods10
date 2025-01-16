@@ -58,7 +58,7 @@ for raw_username in "${USERS[@]}"; do
 		continue
 	fi
 
-	UUID=$(curl -s "https://api.mojang.com/users/profiles/minecraft/$username" | jq -r '.id')
+	UUID=$(curl -s "https://api.minetools.eu/uuid/$username" | jq -r '.id')
 	if [[ "$UUID" != "null" ]]; then
 		if jq -e ".[] | select(.uuid == \"$UUID\")" whitelist.json > /dev/null; then
 			echo "Whitelist: $username ($UUID) is already whitelisted."
@@ -80,7 +80,7 @@ for raw_username in "${OPS[@]}"; do
         continue
     fi
 
-    UUID=$(curl -s "https://api.mojang.com/users/profiles/minecraft/$username" | jq -r '.id')
+    UUID=$(curl -s "https://api.minetools.eu/uuid/$username" | jq -r '.id')
     if [[ "$UUID" != "null" ]]; then
         if jq -e ".[] | select(.uuid == \"$UUID\")" ops.json > /dev/null; then
             echo "Ops: $username ($UUID) is already an operator."
