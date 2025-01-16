@@ -66,8 +66,6 @@ for raw_username in "${USERS[@]}"; do
 
     UUID=$(curl -s "https://playerdb.co/api/player/minecraft/$username" | jq -r '.data.player.id')
     if [[ "$UUID" != "null" ]]; then
-        UUID=$(echo "$UUID" | sed -r 's/(.{8})(.{4})(.{4})(.{4})(.{12})/\1-\2-\3-\4-\5/')
-
         if jq -e ".[] | select(.uuid == \"$UUID\" and .name == \"$username\")" whitelist.json > /dev/null; then
             echo "Whitelist: $username ($UUID) is already whitelisted. Skipping..."
         else
@@ -95,8 +93,6 @@ for raw_username in "${OPS[@]}"; do
 
     UUID=$(curl -s "https://playerdb.co/api/player/minecraft/$username" | jq -r '.data.player.id')
     if [[ "$UUID" != "null" ]]; then
-        UUID=$(echo "$UUID" | sed -r 's/(.{8})(.{4})(.{4})(.{4})(.{12})/\1-\2-\3-\4-\5/')
-
         if jq -e ".[] | select(.uuid == \"$UUID\" and .name == \"$username\")" ops.json > /dev/null; then
             echo "Ops: $username ($UUID) is already an operator. Skipping..."
         else
