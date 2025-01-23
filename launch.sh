@@ -1,5 +1,5 @@
 #!/bin/bash
-
+ 
 set -x
 
 NEOFORGE_VERSION=21.1.97
