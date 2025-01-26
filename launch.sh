@@ -14,10 +14,10 @@ else
 fi
 
 if ! [[ -f "Server-Files-$SERVER_VERSION.zip" ]]; then
-    rm -fr config defaultconfigs kubejs mods packmenu Simple.zip forge*
-    curl -Lo "Server-Files-$SERVER_VERSION.zip" 'https://edge.forgecdn.net/files/6122/30/Server-Files-2.29.zip' || exit 9
+    rm -fr config defaultconfigs kubejs mods packmenu Server-Files-* neoforge*
+    curl -Lo "Server-Files-$SERVER_VERSION.zip" "https://edge.forgecdn.net/files/6122/030/ServerFiles-$SERVER_VERSION.zip" || exit 9
     unzip -u -o "Server-Files-$SERVER_VERSION.zip" -d /data
-    DIR_TEST=$(find . -type d -maxdepth 1 | tail -1 | sed 's/^.\{2\}//g')
+    DIR_TEST="ServerFiles-$SERVER_VERSION"
     if [[ $(find . -type d -maxdepth 1 | wc -l) -gt 1 ]]; then
         cd "${DIR_TEST}"
         find . -type d -exec chmod 777 {} +
